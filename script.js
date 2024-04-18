@@ -35,6 +35,14 @@ function createRow() {
   return rowDiv;
 }
 
+function random256() {
+  return Math.floor(Math.random() * 256);
+}
+
+function getRandomRgbString() {
+  return `rgb(${random256()}, ${random256()}, ${random256()})`;
+}
+
 function mouseEnteredCell(event) {
   // Get the target of the event, that points to the div for the cell that was entered
   const target = event.target
@@ -45,7 +53,11 @@ function mouseEnteredCell(event) {
   }
 
   // Mouse moved through the cell, so highlight the cell.
-  target.classList.add("cell-highlighted");
+  // target.classList.add("cell-highlighted");
+
+  // For extra credit part 1: Use random RGB values.
+  target.style.backgroundColor = getRandomRgbString();
+
 }
 
 function setupGrid() {
