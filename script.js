@@ -53,19 +53,6 @@ function mouseEnteredCell(event) {
   target.style.backgroundColor = "green"
 }
 
-function mouseExitedCell(event) {
-  // Get the target of the event, that points to the div for the cell that was exited
-  const target = event.target
-
-  // Don't process the "container" div itself.
-  if (target.id === "container") {
-    return;
-  }
-
-  // Unset the background color
-  target.style.backgroundColor = ""
-}
-
 function setupGrid() {
   // Grab a reference to the container.
   const container = document.querySelector("#container");
@@ -81,7 +68,6 @@ function setupGrid() {
 
   // Use event delegation on the container to manage a hover effect on the per-cell divs
   container.addEventListener('mouseover', mouseEnteredCell)
-  container.addEventListener('mouseout', mouseExitedCell)
 }
 
 setupGrid();
