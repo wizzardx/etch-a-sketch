@@ -1,6 +1,9 @@
 "use strict";
 
 // TODO: Use CSS for styling, rather than setting style properties directly in JavaScript.
+// TODO: Remove 'a' character from each cell
+// TODO: Make each cell into a square.
+
 
 const NUM_GRID_ROWS = 16;
 const NUM_GRID_COLUMNS = 16;
