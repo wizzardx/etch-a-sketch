@@ -1,9 +1,6 @@
 "use strict";
 
 // TODO: Use CSS for styling, rather than setting style properties directly in JavaScript.
-// TODO: Remove 'a' character from each cell
-// TODO: Make each cell into a square.
-
 
 const DEFAULT_SQUARES_PER_GRID_SIDE = 16;
 const MIN_SQUARES_PER_GRID_SIDE = 1;
@@ -13,14 +10,15 @@ const MAX_SQUARES_PER_GRID_SIDE = 100;
 // are updated when the user clicks on the "Change Grid Size" button
 let numGridRows = DEFAULT_SQUARES_PER_GRID_SIDE;
 let numGridColumns = DEFAULT_SQUARES_PER_GRID_SIDE;
+let GRID_WIDTH_PX = 960;
+let GRID_HEIGHT_PX = 960;
+
 
 function createCell() {
   const cell = document.createElement("div");
   cell.style.borderColor = "red";
-  // cell.style.borderWidth = "1px";
+  cell.style.borderWidth = "1px";
   cell.style.borderStyle = "solid";
-  cell.textContent = "a";
-  // cell.style.cssText = "height:0;width:20%;padding-bottom:20%;background-color:yellow"
   cell.style.flexGrow = "1";
   return cell;
 }
@@ -29,6 +27,8 @@ function createRow() {
   // Create a div to act as the row.
   const rowDiv = document.createElement("div");
   rowDiv.style.display = "flex";
+  rowDiv.style.width = `${GRID_WIDTH_PX}px`;
+  rowDiv.style.height = `${GRID_HEIGHT_PX / numGridRows}px`;
 
   // Inside the row div, add 16 divs to act as the cells.
   for (let i = 0; i < numGridColumns; i++) {
@@ -43,6 +43,12 @@ function createRow() {
 function mouseEnteredCell(event) {
   // Get the target of the event, that points to the div for the cell that was entered
   const target = event.target
+
+  // Don't process the "container" div itself.
+  if (target.id === "container") {
+    return;
+  }
+
   // Set its background color to green
   target.style.backgroundColor = "green"
 }
@@ -50,6 +56,12 @@ function mouseEnteredCell(event) {
 function mouseExitedCell(event) {
   // Get the target of the event, that points to the div for the cell that was exited
   const target = event.target
+
+  // Don't process the "container" div itself.
+  if (target.id === "container") {
+    return;
+  }
+
   // Unset the background color
   target.style.backgroundColor = ""
 }
