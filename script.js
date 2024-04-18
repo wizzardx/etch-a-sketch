@@ -43,6 +43,35 @@ function getRandomRgbString() {
   return `rgb(${random256()}, ${random256()}, ${random256()})`;
 }
 
+function increaseOpacity(style) {
+  // Grab opacity, if present at all, from the style.
+  let opacityString = style.opacity;
+
+  // If the opacity is an empty string then convert it to 0.0
+  if (opacityString === "") {
+    opacityString = "0.1";
+  }
+
+  // Convert from string to a floating point
+  let opacity = parseFloat(opacityString);
+
+  // If opacity is less than 1.0, then add 0.1 to it.
+  if (opacity <= 1.0) {
+    opacity += 0.1;
+  }
+
+  // If the opacity went past 1.0 then clip it back to 1.0.
+  if (opacity > 1.0) {
+    opacity = 1.0;
+  }
+
+  // Convert opacity back to string
+  opacityString = `${opacity}`;
+
+  // Save updated opacity to the style
+  style.opacity = opacityString;
+}
+
 function mouseEnteredCell(event) {
   // Get the target of the event, that points to the div for the cell that was entered
   const target = event.target
@@ -55,9 +84,11 @@ function mouseEnteredCell(event) {
   // Mouse moved through the cell, so highlight the cell.
   // target.classList.add("cell-highlighted");
 
+  // For extra credit part 2: Work with gradually increasing opacity.
+  increaseOpacity(target.style);
+
   // For extra credit part 1: Use random RGB values.
   target.style.backgroundColor = getRandomRgbString();
-
 }
 
 function setupGrid() {
