@@ -1,7 +1,5 @@
 "use strict";
 
-// TODO: Use CSS for styling, rather than setting style properties directly in JavaScript.
-
 const DEFAULT_SQUARES_PER_GRID_SIDE = 16;
 const MIN_SQUARES_PER_GRID_SIDE = 1;
 const MAX_SQUARES_PER_GRID_SIDE = 100;
@@ -16,17 +14,14 @@ let GRID_HEIGHT_PX = 960;
 
 function createCell() {
   const cell = document.createElement("div");
-  cell.style.borderColor = "red";
-  cell.style.borderWidth = "1px";
-  cell.style.borderStyle = "solid";
-  cell.style.flexGrow = "1";
+  cell.classList.add("grid-cell")
   return cell;
 }
 
 function createRow() {
   // Create a div to act as the row.
   const rowDiv = document.createElement("div");
-  rowDiv.style.display = "flex";
+  rowDiv.classList.add("grid-row");
   rowDiv.style.width = `${GRID_WIDTH_PX}px`;
   rowDiv.style.height = `${GRID_HEIGHT_PX / numGridRows}px`;
 
@@ -49,8 +44,8 @@ function mouseEnteredCell(event) {
     return;
   }
 
-  // Set its background color to green
-  target.style.backgroundColor = "green"
+  // Mouse moved through the cell, so highlight the cell.
+  target.classList.add("cell-highlighted");
 }
 
 function setupGrid() {

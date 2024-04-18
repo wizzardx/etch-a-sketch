@@ -1,0 +1,14 @@
+.grid-cell {
+    border-color: red;
+    border-width: 1px;
+    border-style: solid;
+    flex-grow: 1;
+}
+
+.grid-row {
+    display: flex;
+}
+
+.cell-highlighted {
+    background-color: green;
+}
