@@ -5,8 +5,14 @@
 // TODO: Make each cell into a square.
 
 
-const NUM_GRID_ROWS = 16;
-const NUM_GRID_COLUMNS = 16;
+const DEFAULT_SQUARES_PER_GRID_SIDE = 16;
+const MIN_SQUARES_PER_GRID_SIDE = 1;
+const MAX_SQUARES_PER_GRID_SIDE = 100;
+
+// Global variables indicating the size of the grid on each side. These
+// are updated when the user clicks on the "Change Grid Size" button
+let numGridRows = DEFAULT_SQUARES_PER_GRID_SIDE;
+let numGridColumns = DEFAULT_SQUARES_PER_GRID_SIDE;
 
 function createCell() {
   const cell = document.createElement("div");
@@ -25,7 +31,7 @@ function createRow() {
   rowDiv.style.display = "flex";
 
   // Inside the row div, add 16 divs to act as the cells.
-  for (let i = 0; i < NUM_GRID_COLUMNS; i++) {
+  for (let i = 0; i < numGridColumns; i++) {
     const cell = createCell();
     rowDiv.appendChild(cell);
   }
@@ -48,7 +54,7 @@ function mouseExitedCell(event) {
   target.style.backgroundColor = ""
 }
 
-function setup16x16grid() {
+function setupGrid() {
   // Grab a reference to the container.
   const container = document.querySelector("#container");
   if (container === null) {
@@ -56,7 +62,7 @@ function setup16x16grid() {
   }
 
   // Add 16 rows to the container:
-  for (let i= 0; i < NUM_GRID_ROWS; i++) {
+  for (let i= 0; i < numGridRows; i++) {
     const row = createRow();
     container.appendChild(row);
   }
@@ -66,4 +72,67 @@ function setup16x16grid() {
   container.addEventListener('mouseout', mouseExitedCell)
 }
 
-setup16x16grid();
+setupGrid();
+
+  function deleteDivsInContainer() {
+    // Grab a reference to the container.
+    const container = document.querySelector("#container");
+    if (container === null) {
+      throw new Error("Could not container element.");
+    }
+
+    // Convert live NodeList to a static array
+    const children = Array.from(container.childNodes);
+
+    // Proceed through and delete the direct child nodes of #container that are divs.
+    for (const child of children) {
+      if (child.tagName === "DIV") {
+        container.removeChild(child);
+      }
+    }
+  }
+
+function userClickedChangeGridSizeButton() {
+  const input = prompt("How many squares per side?\n" +
+    `(${MIN_SQUARES_PER_GRID_SIDE}-${MAX_SQUARES_PER_GRID_SIDE})`, DEFAULT_SQUARES_PER_GRID_SIDE.toString());
+  // Quit if the user quit the prompt
+  if (input === null) {
+    return;
+  }
+  // Attempt to convert user input to integer
+  const squaresPerSide = parseInt(input);
+
+  // Show a message and quit if the integer wasn't a valid integer.
+  if (isNaN(squaresPerSide)) {
+    alert("Input was not a valid integer");
+    return;
+  }
+
+  // Check the range of the user input.
+  if (squaresPerSide < MIN_SQUARES_PER_GRID_SIDE) {
+    alert("Your input number was too low")
+  } else if (squaresPerSide > MAX_SQUARES_PER_GRID_SIDE) {
+    alert("Your input number was too high");
+    return;
+  }
+
+  // Update the global variables indicating the size of the grid.
+  // and then delete and re-create the grid.
+  numGridRows = squaresPerSide;
+  numGridColumns = squaresPerSide;
+
+  deleteDivsInContainer();
+  setupGrid()
+}
+
+function setupChangeGridSizeButton() {
+  // Handle click events on the "Change Grid Size" button.
+  const button = document.getElementById("change-grid-size-button")
+  if (button === null) {
+    throw new Error("Unable to find 'Change Grid Size' button");
+  }
+  button.addEventListener('click', userClickedChangeGridSizeButton);
+}
+
+// Respond to the user clicking on the "Change Grid Size" button
+setupChangeGridSizeButton();
